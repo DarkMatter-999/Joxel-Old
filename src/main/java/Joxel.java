@@ -11,17 +11,18 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
+import dm.joxel.Models.RawModel;
 import dm.joxel.RenderEngine.DisplayManager;
+import dm.joxel.RenderEngine.Loader;
 import dm.joxel.RenderEngine.MasterRenderer;
 
 public class Joxel {
+	public static Loader loader = null;
+
 	public static void main(String[] args) {
 		DisplayManager dm = new DisplayManager();
 
-		MasterRenderer renderer = new MasterRenderer();
-
 		dm.createDisplay();
-
 		final long window = dm.window;
 
 		// This line is critical for LWJGL's interoperation with GLFW's
@@ -31,12 +32,28 @@ public class Joxel {
 		// bindings available for use.
 		GL.createCapabilities();
 		
+		MasterRenderer renderer = new MasterRenderer();
+		Loader loader = new Loader();
+
+		//loader = loader1;
+
+		float[] vertices = {-0.5f,-0.5f,0f,
+                0.5f, -0.5f, 0f,
+                0f,0.5f,0f};
+
+		int[] indices = {0,1,2};
+
+		RawModel model = loader.loadToVao(vertices, indices);
+
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
 		while ( !glfwWindowShouldClose(window) ) {
 			renderer.prepare();
 
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+			// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+															
+			renderer.render(model);
+
 			glfwSwapBuffers(window); // swap the color buffers
 
 			dm.updateDisplay();
@@ -47,6 +64,7 @@ public class Joxel {
 		}
 
 		
+		loader.cleanUp();
 		dm.closeDisplay();
 	}
 

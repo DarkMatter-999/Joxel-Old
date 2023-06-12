@@ -15,8 +15,8 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 public class DisplayManager {
 	public final int FPS_CAP = 120;
-	public final int HEIGHT = 1280;
-	public final int WIDTH = 720;
+	public final int HEIGHT = 800;
+	public final int WIDTH = 600;
 	public long window;
 
 	public void createDisplay() {
