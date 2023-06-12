@@ -14,11 +14,12 @@ import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 public class DisplayManager {
-	public static final int HEIGHT = 1280;
-	public static final int WIDTH = 720;
+	public final int FPS_CAP = 120;
+	public final int HEIGHT = 1280;
+	public final int WIDTH = 720;
+	public long window;
 
-	private static long window;
-	public static void createDisplay() {
+	public void createDisplay() {
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
 		GLFWErrorCallback.createPrint(System.err).set();
@@ -41,7 +42,16 @@ public class DisplayManager {
 		glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
 			if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
 				glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-		});
+											
+			if ( key == GLFW_KEY_E && action == GLFW_PRESS ) {
+				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+			if (glfwRawMouseMotionSupported())
+				glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+			
+			}
+		}
+		);
 
 		// Get the thread stack and push a new frame
 		try ( MemoryStack stack = stackPush() ) {
@@ -69,33 +79,17 @@ public class DisplayManager {
 
 		// Make the window visible
 		glfwShowWindow(window);
+
 	}
 
-	public static void updateDisplay() {
-		// This line is critical for LWJGL's interoperation with GLFW's
-		// OpenGL context, or any context that is managed externally.
-		// LWJGL detects the context that is current in the current thread,
-		// creates the GLCapabilities instance and makes the OpenGL
-		// bindings available for use.
-		GL.createCapabilities();
+	public void updateDisplay() {
+		
 
-		// Set the clear color
-		glClearColor(0.4f, 0.7f, 1.0f, 1.0f);
-
-		// Run the rendering loop until the user has attempted to close
-		// the window or has pressed the ESCAPE key.
-		while ( !glfwWindowShouldClose(window) ) {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
-
-			glfwSwapBuffers(window); // swap the color buffers
-
-			// Poll for window events. The key callback above will only be
-			// invoked during this call.
-			glfwPollEvents();
 		}
-	}
 
-	public static void closeDisplay() {
+	
+
+	public void closeDisplay() {
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(window);
 		glfwDestroyWindow(window);
