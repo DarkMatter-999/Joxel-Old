@@ -15,6 +15,7 @@ import dm.joxel.Models.RawModel;
 import dm.joxel.RenderEngine.DisplayManager;
 import dm.joxel.RenderEngine.Loader;
 import dm.joxel.RenderEngine.MasterRenderer;
+import dm.joxel.Shader.StaticShader;
 
 public class Joxel {
 	public static Loader loader = null;
@@ -22,7 +23,7 @@ public class Joxel {
 	public static void main(String[] args) {
 		DisplayManager dm = new DisplayManager();
 
-		dm.createDisplay();
+		dm.createDisplay(1280, 720);
 		final long window = dm.window;
 
 		// This line is critical for LWJGL's interoperation with GLFW's
@@ -35,13 +36,21 @@ public class Joxel {
 		MasterRenderer renderer = new MasterRenderer();
 		Loader loader = new Loader();
 
+		StaticShader shader = new StaticShader();
+
 		//loader = loader1;
 
-		float[] vertices = {-0.5f,-0.5f,0f,
-                0.5f, -0.5f, 0f,
-                0f,0.5f,0f};
+		float[] vertices = {
+			-0.5f,0.5f, 0f,
+            -0.5f, -0.5f, 0f,
+			0.5f, -0.5f,0f,
+            0.5f, 0.5f, 0f
+		};
 
-		int[] indices = {0,1,2};
+		int[] indices = {
+			0, 1, 2,
+			2, 3, 0
+		};
 
 		RawModel model = loader.loadToVao(vertices, indices);
 
@@ -51,8 +60,10 @@ public class Joxel {
 			renderer.prepare();
 
 			// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
-															
+								
+			shader.start();
 			renderer.render(model);
+			shader.stop();
 
 			glfwSwapBuffers(window); // swap the color buffers
 
@@ -65,6 +76,7 @@ public class Joxel {
 
 		
 		loader.cleanUp();
+		shader.cleanUp();
 		dm.closeDisplay();
 	}
 

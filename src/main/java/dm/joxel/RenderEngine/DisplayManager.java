@@ -19,7 +19,7 @@ public class DisplayManager {
 	public final int WIDTH = 600;
 	public long window;
 
-	public void createDisplay() {
+	public void createDisplay(int height, int width) {
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
 		GLFWErrorCallback.createPrint(System.err).set();
@@ -34,7 +34,7 @@ public class DisplayManager {
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
 		// Create the window
-		window = glfwCreateWindow(HEIGHT, WIDTH, "Joxel", NULL, NULL);
+		window = glfwCreateWindow(height, width, "Joxel", NULL, NULL);
 		if ( window == NULL )
 			throw new RuntimeException("Failed to create the GLFW window");
 
