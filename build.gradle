@@ -134,4 +134,6 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl-xxhash::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-yoga::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-zstd::$lwjglNatives"
+
+	implementation 'org.l33tlabs.twl:pngdecoder:1.0'
 }

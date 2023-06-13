@@ -12,6 +12,8 @@ import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 import dm.joxel.Models.RawModel;
+import dm.joxel.Models.TexturedModel;
+import dm.joxel.Textures.ModelTexture;
 import dm.joxel.RenderEngine.DisplayManager;
 import dm.joxel.RenderEngine.Loader;
 import dm.joxel.RenderEngine.MasterRenderer;
@@ -41,9 +43,9 @@ public class Joxel {
 		//loader = loader1;
 
 		float[] vertices = {
-			-0.5f,0.5f, 0f,
+			-0.5f, 0.5f, 0f,
             -0.5f, -0.5f, 0f,
-			0.5f, -0.5f,0f,
+			0.5f, -0.5f, 0f,
             0.5f, 0.5f, 0f
 		};
 
@@ -52,7 +54,17 @@ public class Joxel {
 			2, 3, 0
 		};
 
-		RawModel model = loader.loadToVao(vertices, indices);
+		float[] uv = {
+			0, 0,
+			0, 1,
+		    1, 1,
+			1, 0
+		};
+
+		RawModel model = loader.loadToVao(vertices, indices, uv);
+		ModelTexture texture = new ModelTexture(loader.loadTexture("Resources/dirt.png"));
+
+		TexturedModel texmodel = new TexturedModel(model, texture);
 
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
@@ -62,7 +74,7 @@ public class Joxel {
 			// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 								
 			shader.start();
-			renderer.render(model);
+			renderer.render(texmodel);
 			shader.stop();
 
 			glfwSwapBuffers(window); // swap the color buffers

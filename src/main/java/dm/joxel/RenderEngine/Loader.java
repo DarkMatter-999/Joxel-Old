@@ -7,16 +7,20 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import java.nio.*;
+import java.io.IOException;
 import dm.joxel.Models.RawModel;
+import dm.joxel.Textures.Texture;
+  
 
 public class Loader {
 	static List<Integer> vaos = new ArrayList<Integer>();
 	static List<Integer> vbos = new ArrayList<Integer>();
+	static List<Integer> textures = new ArrayList<Integer>();
 
-
-	public RawModel loadToVao(float[] vertices, int[] indices) {
+	public RawModel loadToVao(float[] vertices, int[] indices, float[] uv) {
 		int VAOid = createVAO();
 		storeDataInAttributeList(vertices, 0, 3);
+		storeDataInAttributeList(uv, 1, 2);
 		bindIndicesBuffer(indices);
 		GL30.glBindVertexArray(0);
 
@@ -29,6 +33,21 @@ public class Loader {
 		GL30.glBindVertexArray(VAOid);
 		return VAOid;
 
+	}
+
+	public int loadTexture(String filename) {
+		int textureId = -1;
+		try {
+			textureId = Texture.openImageToTexture(filename);
+			textures.add(textureId);
+			return textureId;
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Could not find Texture image " + filename);
+			System.exit(-1);
+		}
+
+		return textureId;
 	}
 
 	public void storeDataInAttributeList(float[] data, int attributeNo, int dimension) {
@@ -74,6 +93,10 @@ public class Loader {
 
 		for(int vbo: vbos) {
 			GL30.glDeleteVertexArrays(vbo);
+		}
+
+		for(int texture: textures) {
+			GL30.glDeleteVertexArrays(texture);
 		}
 	}
 }

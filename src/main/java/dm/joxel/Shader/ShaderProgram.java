@@ -51,11 +51,8 @@ public abstract class ShaderProgram {
 	private int loadShader(String file, int type) {
 		StringBuilder shaderSource = new StringBuilder();
 
-
 		try {
-			System.out.println(Runtime.getRuntime().exec("pwd > /tmp/test.txt"));
 			InputStream in = new FileInputStream(file);
-			System.out.println(in);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
 			String line;
