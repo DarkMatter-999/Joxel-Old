@@ -18,6 +18,9 @@ import dm.joxel.RenderEngine.DisplayManager;
 import dm.joxel.RenderEngine.Loader;
 import dm.joxel.RenderEngine.MasterRenderer;
 import dm.joxel.Shader.StaticShader;
+import dm.joxel.Entities.Entity;
+
+import org.joml.*;
 
 public class Joxel {
 	public static Loader loader = null;
@@ -66,6 +69,8 @@ public class Joxel {
 
 		TexturedModel texmodel = new TexturedModel(model, texture);
 
+		Entity entity = new Entity(texmodel, new Vector3f(0,0,0), 0, 0, 0, 1);
+
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
 		while ( !glfwWindowShouldClose(window) ) {
@@ -74,8 +79,17 @@ public class Joxel {
 			// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 								
 			shader.start();
-			renderer.render(texmodel);
+			renderer.render(entity, shader);
 			shader.stop();
+
+			// Change translation
+			entity.position.x += 0.001f;
+
+			entity.rotX += 0.05f;
+			entity.rotY += 0.05f;
+			entity.rotZ += 0.05f;
+
+			entity.scale += 0.01f;
 
 			glfwSwapBuffers(window); // swap the color buffers
 

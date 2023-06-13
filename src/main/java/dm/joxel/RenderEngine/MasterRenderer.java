@@ -2,8 +2,10 @@ package dm.joxel.RenderEngine;
 
 import org.lwjgl.opengl.GL11;
 
+import dm.joxel.Entities.Entity;
 import dm.joxel.Models.TexturedModel;
 import dm.joxel.RenderEngine.EntityRenderer;
+import dm.joxel.Shader.StaticShader;
 
 public class MasterRenderer {
 	public void prepare() {
@@ -11,7 +13,7 @@ public class MasterRenderer {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 	}
 
-	public void render(TexturedModel model) {
-		EntityRenderer.render(model);
+	public void render(Entity entity, StaticShader shader) {
+		EntityRenderer.render(entity, shader);
 	}
 }

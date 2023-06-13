@@ -136,4 +136,5 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl-zstd::$lwjglNatives"
 
 	implementation 'org.l33tlabs.twl:pngdecoder:1.0'
+	implementation 'org.joml:joml:1.10.4'
 }
